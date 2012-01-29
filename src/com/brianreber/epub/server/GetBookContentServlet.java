@@ -2,7 +2,6 @@ package com.brianreber.epub.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,10 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.domain.Spine;
-import nl.siegmann.epublib.domain.TOCReference;
-import nl.siegmann.epublib.domain.TableOfContents;
 import nl.siegmann.epublib.epub.EpubReader;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,9 +34,10 @@ public class GetBookContentServlet extends HttpServlet {
 		res.setContentType("application/json");
 
 		String bookId = req.getParameter("bookid");
-		String resId = req.getParameter("resId");
+		int startIndex = Integer.parseInt(req.getParameter("startid"));
+		int endIndex = Integer.parseInt(req.getParameter("endid"));
 
-		log.log(Level.WARNING, "resNum: " + resId);
+		log.log(Level.WARNING, "start: " + startIndex + "; end: " + endIndex);
 
 		try {
 			Book book = pm.getObjectById(Book.class, Long.parseLong(bookId));
@@ -49,57 +48,23 @@ public class GetBookContentServlet extends HttpServlet {
 			nl.siegmann.epublib.domain.Book b = epubReader.readEpub(blob);
 
 			JSONObject obj = new JSONObject();
+			JSONArray arr = new JSONArray();
 
-			List<Resource> resources = b.getContents();
 			Spine spine = b.getSpine();
 
-			if (resId != null) {
-				for (int i = 0; i < resources.size(); i++) {
-					Resource r = resources.get(i);
-					if (r.getId().contains(resId)) {
-						log.log(Level.WARNING, "found resource: " + i);
-						int index = spine.getResourceIndex(r);
-						log.log(Level.WARNING, "spine index: " + index);
+			for (int i = startIndex; i < endIndex; i++) {
+				Resource r = spine.getResource(i);
+				String data = AppEngineUtil.readStreamAsString(r.getInputStream());
 
-						TableOfContents toc = b.getTableOfContents();
-						List<TOCReference> refs = toc.getTocReferences();
-
-						int nextIndex = index;
-
-						for (int j = 0; j < refs.size(); j++) {
-							TOCReference ref = refs.get(j);
-							log.log(Level.WARNING, "current TOCRef: " + ref.getTitle() + "; " + ref.getResourceId());
-							if (ref.getResourceId().contains(resId)) {
-								log.log(Level.WARNING, "found matching TOCRef: " + ref.getTitle() + "; " + ref.getResourceId());
-								nextIndex = spine.getResourceIndex(refs.get(j + 1).getResource());
-								break;
-							}
-						}
-
-						log.log(Level.WARNING, "next spine index: " + nextIndex);
-						StringBuilder data = new StringBuilder();
-
-						for (int j = index; j < nextIndex; j++) {
-							Resource temp = spine.getResource(j);
-							data.append(AppEngineUtil.readStreamAsString(temp.getInputStream()));
-						}
-
-						obj.put("id", r.getId());
-						obj.put("data", data.toString());
-						break;
-					}
-				}
+				JSONObject tmp = new JSONObject();
+				tmp.put("id", r.getId());
+				tmp.put("data", data);
+				arr.put(tmp);
 			}
 
-			if (resId == null || !obj.has("id")) {
-				String data = AppEngineUtil.readStreamAsString(resources.get(0).getInputStream());
+			obj.put("resources", arr);
 
-				obj.put("id", resources.get(0).getId());
-				obj.put("data", data);
-			}
-
-			String output = obj.toString();
-			out.print(output);
+			out.print(obj.toString());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} finally {

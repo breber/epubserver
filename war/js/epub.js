@@ -28,7 +28,7 @@ function getResources() {
 				
 				td.innerHTML = '<a href="javascript:void(0);">' + data.title + '</a>';
 				
-				td.onclick = function() { loadResource(data.id); };
+				td.onclick = function() { loadResource(data.id, data.id_end); };
 				
 				row.appendChild(td);
 				tbl.appendChild(row);
@@ -37,14 +37,18 @@ function getResources() {
 	}
 };
 
-function loadResource(resId) {
+function loadResource(start, end) {
 	var bookId = $.getUrlVar('bookId');
 	
 	if (bookId !== null && bookId !== undefined) {
 		var content = document.getElementById("content");
 		
-		$.getJSON("/book/content", { bookid : bookId, resId: String(resId) }, function(results) {
-			content.innerHTML = results.data;
+		$.getJSON("/book/content", { bookid : bookId, startid: Number(start), endid: Number(end) }, function(results) {
+			console.log(results);
+			content.innerHTML = "";
+			$.each(results.resources, function (index, item) {
+				content.innerHTML += item.data;
+			});
 		});
 	}
 };
