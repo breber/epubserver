@@ -43,10 +43,8 @@ public class UploadBookServlet extends HttpServlet {
 			} finally {
 				pm.close();
 			}
-
-			resp.sendRedirect("/book/list");
-		} else {
-			resp.sendRedirect("/");
 		}
+
+		resp.sendRedirect("/");
 	}
 }

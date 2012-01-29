@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nl.siegmann.epublib.domain.Resource;
-import nl.siegmann.epublib.domain.Spine;
 import nl.siegmann.epublib.domain.TOCReference;
 import nl.siegmann.epublib.domain.TableOfContents;
 import nl.siegmann.epublib.epub.EpubReader;
@@ -48,21 +46,7 @@ public class GetBookResourceListServlet extends HttpServlet {
 
 			obj.put("resources", getTableOfContents(resources.getTocReferences()));
 
-			JSONArray arr = new JSONArray();
-			Spine spine = b.getSpine();
-
-			for (int i = 0; i < spine.size(); i++) {
-				Resource r = spine.getResource(i);
-				JSONObject tmp = new JSONObject();
-				tmp.put("id", r.getId());
-				tmp.put("url", r.getHref());
-				arr.put(tmp);
-			}
-
-			obj.put("spine", arr);
-
-			String output = obj.toString();
-			out.print(output);
+			out.print(obj.toString());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}finally {
@@ -87,7 +71,6 @@ public class GetBookResourceListServlet extends HttpServlet {
 			JSONObject obj = new JSONObject();
 			obj.append("title", tocReference.getTitle());
 			obj.append("id", tocReference.getResourceId());
-			//			obj.append("children", getTableOfContents(tocReference.getChildren()));
 
 			arr.put(obj);
 		}
