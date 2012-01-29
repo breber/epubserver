@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	
+	<!-- Upload a book to the datastore -->
+	<servlet>
+		<servlet-name>UploadBook</servlet-name>
+		<servlet-class>com.brianreber.epub.server.UploadBookServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadBook</servlet-name>
+		<url-pattern>/book/upload</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Download the ePub file -->
+	<servlet>
+		<servlet-name>DownloadBook</servlet-name>
+		<servlet-class>com.brianreber.epub.server.DownloadBookServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DownloadBook</servlet-name>
+		<url-pattern>/book/download</url-pattern>
+	</servlet-mapping>
+	
+	<!-- List the books for a user -->
+	<servlet>
+		<servlet-name>ListBooks</servlet-name>
+		<servlet-class>com.brianreber.epub.server.ListBooksServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ListBooks</servlet-name>
+		<url-pattern>/book/list</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Get the list of Resources for a specific book -->
+	<servlet>
+		<servlet-name>GetResourceList</servlet-name>
+		<servlet-class>com.brianreber.epub.server.GetBookResourceListServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetResourceList</servlet-name>
+		<url-pattern>/book/resources</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Get the book data for a specific book -->
+	<servlet>
+		<servlet-name>GetBookData</servlet-name>
+		<servlet-class>com.brianreber.epub.server.GetBookContentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetBookData</servlet-name>
+		<url-pattern>/book/content</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Require the user be logged in to do anything on this AppEngine server -->
+	<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/book/*</url-pattern>
+			<url-pattern>/uploadbook.jsp</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>*</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>
