@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.epub.EpubReader;
 
+import org.apache.commons.io.FilenameUtils;
+
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreInputStream;
 
@@ -28,9 +30,10 @@ public class GetBookResourceServlet extends HttpServlet {
 		PrintWriter out = res.getWriter();
 
 		String bookId = req.getParameter("bookid");
-		String resHref = req.getParameter("href");
+		String baseHref = req.getParameter("base");
+		String otherHref = req.getParameter("other");
 
-		log.log(Level.SEVERE, "GetResource: bookid = " + bookId + "; resHref = " + resHref);
+		log.log(Level.SEVERE, "GetResource: bookid = " + bookId + "; baseHref = " + baseHref + "; other = " + otherHref);
 
 		try {
 			Book book = pm.getObjectById(Book.class, Long.parseLong(bookId));
@@ -40,18 +43,30 @@ public class GetBookResourceServlet extends HttpServlet {
 			EpubReader epubReader = new EpubReader();
 			nl.siegmann.epublib.domain.Book b = epubReader.readEpub(blob);
 
-			Resource r = b.getResources().getByHref(resHref);
-			String data = AppEngineUtil.readStreamAsString(r.getInputStream());
+			String canonicalUrl = canonicalize(baseHref, otherHref);
+			log.log(Level.SEVERE, "canonicalUrl: " + canonicalUrl);
 
-			res.setContentType(r.getMediaType().getName());
+			Resource r = b.getResources().getByHref(canonicalUrl);
+			if (r != null) {
+				String data = AppEngineUtil.readStreamAsString(r.getInputStream());
 
-			log.log(Level.SEVERE, "GetResource: " + r);
-			log.log(Level.SEVERE, "GetResource: " + r.getMediaType().getName());
-			log.log(Level.SEVERE, "GetResource: " + data);
+				res.setContentType(r.getMediaType().getName());
 
-			out.print(data);
+				log.log(Level.SEVERE, "GetResource: " + r.getMediaType().getName());
+				log.log(Level.SEVERE, "GetResource: " + data);
+
+				out.print(data);
+			}
 		} finally {
 			pm.close();
 		}
+	}
+
+	private String canonicalize(String baseHref, String otherHref) {
+		String base = FilenameUtils.getPath(baseHref);
+
+		log.log(Level.SEVERE, "base: " + base);
+
+		return FilenameUtils.concat(base, otherHref);
 	}
 }

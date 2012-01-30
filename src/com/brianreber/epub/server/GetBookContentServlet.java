@@ -61,19 +61,9 @@ public class GetBookContentServlet extends HttpServlet {
 				log.log(Level.SEVERE, "HREF = " + href);
 				log.log(Level.SEVERE, "DataPre = " + data);
 
-				String newHref = href.contains("/") ? href.substring(0, href.lastIndexOf('/')) : "";
 
-				if (data.contains("href=\"../")) {
-					if (newHref.contains("/")) {
-						newHref = newHref.substring(0, href.lastIndexOf('/'));
-					} else {
-						newHref = "";
-					}
-
-					data = data.replaceAll("href=\"../", "href=\"/book/getresource?bookid=" + bookId + "&href=" + newHref);
-				} else if (data.contains("href=")) {
-					data = data.replaceAll("href=\"", "href=\"/book/getresource?bookid=" + bookId + "&href=" + newHref);
-				}
+				data = data.replaceAll("href=\"(.+?)\"", "href=\"/book/getresource?bookid=" + bookId + "&base=" + href + "&other=$1\"");
+				data = data.replaceAll("src=\"(.+?)\"", "href=\"/book/getresource?bookid=" + bookId + "&base=" + href + "&other=$1\"");
 				log.log(Level.SEVERE, "DataPost= " + data);
 
 				JSONObject tmp = new JSONObject();
