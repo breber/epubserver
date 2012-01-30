@@ -46,9 +46,23 @@ function loadResource(start, end) {
 		$.getJSON("/book/content", { bookid : bookId, startid: Number(start), endid: Number(end) }, function(results) {
 			console.log(results);
 			content.innerHTML = "";
-			$.each(results.resources, function (index, item) {
-				content.innerHTML += item.data;
-			});
+			try {
+				$.each(results.resources, function (index, item) {
+					content.innerHTML += item.data;
+				});
+			} catch (ex) {
+				console.log("Exception");
+			}
+
+//			var desiredHeight = window.innerHeight;
+//			var desiredWidth = window.innerWidth - 250;
+//			var totalHeight = content.offsetHeight;
+//			var pageCount = Math.floor(totalHeight / desiredHeight) + 1;
+//			console.log("PageCount: " + pageCount);
+//			content.style.padding = 10;
+//			content.style.width = desiredWidth * pageCount;
+//			content.style.height = desiredHeight;
+//			content.style.WebkitColumnCount = pageCount;
 		});
 	}
 };

@@ -2,6 +2,7 @@ package com.brianreber.epub.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,6 +56,25 @@ public class GetBookContentServlet extends HttpServlet {
 			for (int i = startIndex; i < endIndex; i++) {
 				Resource r = spine.getResource(i);
 				String data = AppEngineUtil.readStreamAsString(r.getInputStream());
+				String href = r.getHref();
+
+				log.log(Level.SEVERE, "HREF = " + href);
+				log.log(Level.SEVERE, "DataPre = " + data);
+
+				String newHref = href.contains("/") ? href.substring(0, href.lastIndexOf('/')) : "";
+
+				if (data.contains("href=\"../")) {
+					if (newHref.contains("/")) {
+						newHref = newHref.substring(0, href.lastIndexOf('/'));
+					} else {
+						newHref = "";
+					}
+
+					data = data.replaceAll("href=\"../", "href=\"/book/getresource?bookid=" + bookId + "&href=" + newHref);
+				} else if (data.contains("href=")) {
+					data = data.replaceAll("href=\"", "href=\"/book/getresource?bookid=" + bookId + "&href=" + newHref);
+				}
+				log.log(Level.SEVERE, "DataPost= " + data);
 
 				JSONObject tmp = new JSONObject();
 				tmp.put("id", r.getId());
@@ -66,7 +86,8 @@ public class GetBookContentServlet extends HttpServlet {
 
 			out.print(obj.toString());
 		} catch (JSONException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, "caught exception " + e.getMessage());
+			log.log(Level.SEVERE, Arrays.toString(e.getStackTrace()));
 		} finally {
 			pm.close();
 		}
