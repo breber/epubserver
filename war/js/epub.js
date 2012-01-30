@@ -46,13 +46,10 @@ function loadResource(start, end) {
 		$.getJSON("/book/content", { bookid : bookId, startid: Number(start), endid: Number(end) }, function(results) {
 			console.log(results);
 			content.innerHTML = "";
-			try {
-				$.each(results.resources, function (index, item) {
-					content.innerHTML += item.data;
-				});
-			} catch (ex) {
-				console.log("Exception");
-			}
+			
+			$.each(results.resources, function (index, item) {
+				content.innerHTML += item.data;
+			});
 
 //			var desiredHeight = window.innerHeight;
 //			var desiredWidth = window.innerWidth - 250;
