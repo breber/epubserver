@@ -68,8 +68,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<!-- Require the user be logged in to do anything on this AppEngine server -->
 	<security-constraint>
 		<web-resource-collection>
-			<url-pattern>/book/*</url-pattern>
-			<url-pattern>/uploadbook.jsp</url-pattern>
+			<url-pattern>/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>*</role-name>

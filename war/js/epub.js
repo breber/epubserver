@@ -1,18 +1,17 @@
 function getListOfBooks() {
-		$.getJSON("/book/list", function(results) {
-			var tbl = document.getElementById("availableBooks");
-			console.log(results);
-			
-			$.each(results.books, function(index, data) {
-				var row = document.createElement("tr");
-				var td = document.createElement("td");
+	$.getJSON("/book/list", function(results) {
+		var tbl = document.getElementById("availableBooks");
+
+		$.each(results.books, function(index, data) {
+			var row = document.createElement("tr");
+			var td = document.createElement("td");
 				
-				td.innerHTML = "<a href='/book.html?bookId=" + data.bookid + "'>" + data.title + "</a>";
-				
-				row.appendChild(td);
-				tbl.appendChild(row);
-			});
+			td.innerHTML = "<a href='/book.html?bookId=" + data.bookid + "'>" + data.title + "</a>";
+
+			row.appendChild(td);
+			tbl.appendChild(row);
 		});
+	});
 };
 
 function getResources() {
@@ -25,15 +24,27 @@ function getResources() {
 			$.each(results.resources, function(index, data) {
 				var row = document.createElement("tr");
 				var td = document.createElement("td");
-				
-				td.innerHTML = '<a href="javascript:void(0);">' + data.title + '</a>';
-				
-				td.onclick = function() { loadResource(data.id, data.id_end); };
-				
+
+				td.innerHTML = '<a href="#' + data.id + ';' + data.id_end + '">' + data.title + '</a>';
+				td.onclick = function() {
+					loadResource(data.id, data.id_end);
+				};
+
 				row.appendChild(td);
 				tbl.appendChild(row);
 			});
 		});
+
+		// If we have a hash value in our url, try and load those resources
+	        var urlHash = window.location.hash;
+		if (urlHash !== null && urlHash.length > 1) {
+			var currentResource = urlHash.substr(1, urlHash.indexOf(';') - 1);
+		        var endResource = urlHash.substr(urlHash.indexOf(';') + 1);
+
+		        if (currentResource !== undefined && currentResource !== null) {
+		                loadResource(currentResource, endResource);
+		        }
+		}
 	}
 };
 
@@ -67,7 +78,7 @@ function loadResource(start, end) {
 $.extend({
     getUrlVars: function(){
         var vars = [], hash;
-        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        var hashes = window.location.search.slice(1).split('&');
         for (var i = 0; i < hashes.length; i++) {
             hash = hashes[i].split('=');
             vars.push(hash[0]);
