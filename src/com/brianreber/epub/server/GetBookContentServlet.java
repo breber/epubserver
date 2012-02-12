@@ -2,7 +2,6 @@ package com.brianreber.epub.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,13 +14,8 @@ import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.domain.Spine;
 import nl.siegmann.epublib.epub.EpubReader;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreInputStream;
-
 
 @SuppressWarnings("serial")
 public class GetBookContentServlet extends HttpServlet {
@@ -31,8 +25,9 @@ public class GetBookContentServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
+		res.setContentType("text/html; charset=UTF-8");
+
 		PrintWriter out = res.getWriter();
-		res.setContentType("application/json");
 
 		String bookId = req.getParameter("bookid");
 		int startIndex = Integer.parseInt(req.getParameter("startid"));
@@ -48,36 +43,23 @@ public class GetBookContentServlet extends HttpServlet {
 			EpubReader epubReader = new EpubReader();
 			nl.siegmann.epublib.domain.Book b = epubReader.readEpub(blob);
 
-			JSONObject obj = new JSONObject();
-			JSONArray arr = new JSONArray();
-
 			Spine spine = b.getSpine();
+
+			StringBuilder sb = new StringBuilder();
 
 			for (int i = startIndex; i < endIndex; i++) {
 				Resource r = spine.getResource(i);
 				String data = AppEngineUtil.readStreamAsString(r.getInputStream());
 				String href = r.getHref();
 
-				log.log(Level.SEVERE, "HREF = " + href);
-				log.log(Level.SEVERE, "DataPre = " + data);
-
-
 				data = data.replaceAll("href=\"(.+?)\"", "href=\"/book/getresource?bookid=" + bookId + "&base=" + href + "&other=$1\"");
 				data = data.replaceAll("src=\"(.+?)\"", "href=\"/book/getresource?bookid=" + bookId + "&base=" + href + "&other=$1\"");
 				log.log(Level.SEVERE, "DataPost= " + data);
 
-				JSONObject tmp = new JSONObject();
-				tmp.put("id", r.getId());
-				tmp.put("data", data);
-				arr.put(tmp);
+				sb.append(data);
 			}
 
-			obj.put("resources", arr);
-
-			out.print(obj.toString());
-		} catch (JSONException e) {
-			log.log(Level.SEVERE, "caught exception " + e.getMessage());
-			log.log(Level.SEVERE, Arrays.toString(e.getStackTrace()));
+			out.print(sb.toString());
 		} finally {
 			pm.close();
 		}

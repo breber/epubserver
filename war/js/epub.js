@@ -36,14 +36,14 @@ function getResources() {
 		});
 
 		// If we have a hash value in our url, try and load those resources
-	        var urlHash = window.location.hash;
+		var urlHash = window.location.hash;
 		if (urlHash !== null && urlHash.length > 1) {
 			var currentResource = urlHash.substr(1, urlHash.indexOf(';') - 1);
-		        var endResource = urlHash.substr(urlHash.indexOf(';') + 1);
+	        var endResource = urlHash.substr(urlHash.indexOf(';') + 1);
 
-		        if (currentResource !== undefined && currentResource !== null) {
-		                loadResource(currentResource, endResource);
-		        }
+	        if (currentResource !== undefined && currentResource !== null) {
+	                loadResource(currentResource, endResource);
+	        }
 		}
 	}
 };
@@ -53,25 +53,9 @@ function loadResource(start, end) {
 	
 	if (bookId !== null && bookId !== undefined) {
 		var content = document.getElementById("content");
-		
-		$.getJSON("/book/content", { bookid : bookId, startid: Number(start), endid: Number(end) }, function(results) {
-			console.log(results);
-			content.innerHTML = "";
-			
-			$.each(results.resources, function (index, item) {
-				content.innerHTML += item.data;
-			});
 
-//			var desiredHeight = window.innerHeight;
-//			var desiredWidth = window.innerWidth - 250;
-//			var totalHeight = content.offsetHeight;
-//			var pageCount = Math.floor(totalHeight / desiredHeight) + 1;
-//			console.log("PageCount: " + pageCount);
-//			content.style.padding = 10;
-//			content.style.width = desiredWidth * pageCount;
-//			content.style.height = desiredHeight;
-//			content.style.WebkitColumnCount = pageCount;
-		});
+		content.src = "http://" + window.location.host + "/book/content?bookid=" + bookId + 
+							"&startid=" + start + "&endid=" + end;
 	}
 };
 

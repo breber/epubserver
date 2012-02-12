@@ -4,25 +4,44 @@ html, body {
 	width: 100%;
 	height: 100%;
 	font-family: Arial, helvetica, verdana, sans-serif;
+	overflow-x: hidden;
 }
 
 .outer {
-	display: table;
 	width: 100%;
+	height: 100%;
+	top: 0px;
+	position: fixed;
 }
 
 .left {
-	display:table-cell;
 	width: 190px;
 	padding: 10px;
 }
 
 .right {
-	display:table-cell;
-	vertical-align: top;
-	padding: 10px;
+	margin-left: 200px;
+	position: fixed;
+	height: 100%;
+	top: 0px;
+	padding-right: 10px;
 }
 
 .left table {
 	width: 100%;
+}
+
+iframe {
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
+a:link, a:visited, a:active {
+	text-decoration: none;
+	color: #052C6E;
+}
+
+a:hover {
+	text-decoration: underline;
 }
