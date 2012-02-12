@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,8 +25,10 @@ public class ListBooksServlet extends HttpServlet {
 		res.setContentType("application/json");
 
 		try {
+			Query query = pm.newQuery("select from " + Book.class.getName()
+					+ " where emailAddress=='" + AppEngineUtil.getUserEmail() + "'");
 			@SuppressWarnings("unchecked")
-			List<Book> records = (List<Book>) pm.newQuery(Book.class).execute();
+			List<Book> records = (List<Book>) query.execute();
 
 			JSONObject obj = new JSONObject();
 			JSONArray names = new JSONArray();
