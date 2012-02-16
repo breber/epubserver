@@ -37,6 +37,7 @@ public class UploadBookServlet extends HttpServlet {
 			nl.siegmann.epublib.domain.Book b = epubReader.readEpub(blob);
 
 			book.setTitle(b.getTitle());
+			book.setCoverImage(b.getCoverPage().getData());
 
 			try {
 				pm.makePersistent(book);

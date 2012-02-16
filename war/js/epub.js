@@ -3,12 +3,17 @@ function getListOfBooks() {
 		var tbl = document.getElementById("availableBooks");
 
 		$.each(results.books, function(index, data) {
+			console.log(data);
 			var row = document.createElement("tr");
 			var td = document.createElement("td");
 				
 			td.innerHTML = "<a href='/book.html?bookId=" + data.bookid + "'>" + data.title + "</a>";
-
 			row.appendChild(td);
+
+//			var td1 = document.createElement("td");
+//			td1.innerHtml = "<img src=\"data:image/jpg;base64," + data.cover + "\" width='50' />";
+//
+//			row.appendChild(td1);
 			tbl.appendChild(row);
 		});
 	});
@@ -25,7 +30,7 @@ function getResources() {
 				var row = document.createElement("tr");
 				var td = document.createElement("td");
 
-				td.innerHTML = '<a href="#' + data.id + ';' + data.id_end + '">' + data.title + '</a>';
+				td.innerHTML = '<a id="' + data.id + ';' + data.id_end + '" href="#' + data.id + ';' + data.id_end + '">' + data.title + '</a>';
 				td.onclick = function() {
 					loadResource(data.id, data.id_end);
 				};
@@ -33,18 +38,18 @@ function getResources() {
 				row.appendChild(td);
 				tbl.appendChild(row);
 			});
+
+	                // If we have a hash value in our url, try and load those resources
+	                var urlHash = window.location.hash;
+	                if (urlHash !== null && urlHash.length > 1) {
+	                        var currentResource = urlHash.substr(1, urlHash.indexOf(';') - 1);
+	                        var endResource = urlHash.substr(urlHash.indexOf(';') + 1);
+
+	                        if (currentResource !== undefined && currentResource !== null) {
+	                                loadResource(currentResource, endResource);
+	                        }
+	                }
 		});
-
-		// If we have a hash value in our url, try and load those resources
-		var urlHash = window.location.hash;
-		if (urlHash !== null && urlHash.length > 1) {
-			var currentResource = urlHash.substr(1, urlHash.indexOf(';') - 1);
-	        var endResource = urlHash.substr(urlHash.indexOf(';') + 1);
-
-	        if (currentResource !== undefined && currentResource !== null) {
-	                loadResource(currentResource, endResource);
-	        }
-		}
 	}
 };
 
@@ -54,6 +59,10 @@ function loadResource(start, end) {
 	if (bookId !== null && bookId !== undefined) {
 		var content = document.getElementById("content");
 
+		$("#chapterGuide").ready(function() {
+			$("a.selected").removeClass("selected");
+			$("a[id='" + start + ";" + end + "']").addClass("selected");
+		});
 		content.src = "http://" + window.location.host + "/book/content?bookid=" + bookId + 
 							"&startid=" + start + "&endid=" + end;
 	}

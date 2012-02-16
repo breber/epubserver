@@ -19,6 +19,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.google.appengine.api.datastore.Blob;
+
 /**
  * Represents an ePub book the user has in the Blobstore
  * 
@@ -33,6 +35,7 @@ public class Book {
 	private String emailAddress;
 	private String blobId;
 	private String title;
+	private Blob coverImage;
 
 	/**
 	 * @return the id
@@ -88,6 +91,20 @@ public class Book {
 	 */
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	/**
+	 * @param data the data to set
+	 */
+	public void setCoverImage(byte[] data) {
+		this.coverImage = new Blob(data);
+	}
+
+	/**
+	 * @return the cover image
+	 */
+	public byte[] getCoverImage() {
+		return coverImage.getBytes();
 	}
 
 }
