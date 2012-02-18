@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServlet;
@@ -62,7 +60,7 @@ public class UploadBookServlet extends HttpServlet {
 
 		resp.sendRedirect("/");
 	}
-	private static final Logger log = Logger.getLogger(GetBookContentServlet.class.getSimpleName());
+
 	private String scaleCover(InputStream stream) {
 		ByteArrayInputStream is = (ByteArrayInputStream) stream;
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -83,10 +81,7 @@ public class UploadBookServlet extends HttpServlet {
 		byte[] bytes = buffer.toByteArray();
 
 		Image img = ImagesServiceFactory.makeImage(bytes);
-		Transform resize = ImagesServiceFactory.makeResize(50, 100);
-		log.log(Level.SEVERE, "Image height: " + img.getHeight());
-		log.log(Level.SEVERE, "Image width: " + img.getWidth());
-		log.log(Level.SEVERE, "Image format: " + img.getFormat());
+		Transform resize = ImagesServiceFactory.makeResize(100, 200);
 		img = ImagesServiceFactory.getImagesService().applyTransform(resize, img);
 		String imgData = new String(Base64.encode(img.getImageData()));
 

@@ -14,6 +14,8 @@
  */
 package com.brianreber.epub.server;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,6 +39,11 @@ public class Book {
 	private String title;
 	private String currentResource;
 	private Blob coverImage;
+	private Date lastRead;
+
+	public Book() {
+		lastRead = new Date();
+	}
 
 	/**
 	 * @return the id
@@ -106,6 +113,7 @@ public class Book {
 	 */
 	public void setCurrentResource(String currentResource) {
 		this.currentResource = currentResource;
+		lastRead = new Date();
 	}
 
 	/**
@@ -120,5 +128,12 @@ public class Book {
 	 */
 	public String getCoverImage() {
 		return new String(coverImage.getBytes());
+	}
+
+	/**
+	 * @return the lastRead
+	 */
+	public Date getLastRead() {
+		return lastRead;
 	}
 }

@@ -7,6 +7,14 @@ html, body {
 	overflow-x: hidden;
 }
 
+.listBody {
+	margin: 15px;
+}
+
+td {
+	padding: 10px;
+}
+
 .left {
 	width: 190px;
 	padding: 10px;

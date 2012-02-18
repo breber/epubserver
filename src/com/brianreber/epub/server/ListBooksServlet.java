@@ -26,7 +26,7 @@ public class ListBooksServlet extends HttpServlet {
 
 		try {
 			Query query = pm.newQuery("select from " + Book.class.getName()
-					+ " where emailAddress=='" + AppEngineUtil.getUserEmail() + "'");
+					+ " where emailAddress=='" + AppEngineUtil.getUserEmail() + "' order by lastRead desc");
 			@SuppressWarnings("unchecked")
 			List<Book> records = (List<Book>) query.execute();
 
