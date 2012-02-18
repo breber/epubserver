@@ -5,15 +5,21 @@ function getListOfBooks() {
 		$.each(results.books, function(index, data) {
 			console.log(data);
 			var row = document.createElement("tr");
+			
+			var td1 = document.createElement("td");
+			var img = document.createElement("img");
+			img.src = data.cover;
+			td1.appendChild(img);
+			row.appendChild(td1);
+			
 			var td = document.createElement("td");
-				
-			td.innerHTML = "<a href='/book.html?bookId=" + data.bookid + "'>" + data.title + "</a>";
+			if (data.currentPlace === undefined) {
+				td.innerHTML = "<a href='/book.html?bookId=" + data.bookid + "'>" + data.title + "</a>";
+			} else {
+				td.innerHTML = "<a href='/book.html?bookId=" + data.bookid + "#" + data.currentPlace + "'>" + data.title + "</a>";
+			}
+			
 			row.appendChild(td);
-
-//			var td1 = document.createElement("td");
-//			td1.innerHtml = "<img src=\"data:image/jpg;base64," + data.cover + "\" width='50' />";
-//
-//			row.appendChild(td1);
 			tbl.appendChild(row);
 		});
 	});

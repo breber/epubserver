@@ -2,10 +2,12 @@ package com.brianreber.epub.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
+import javax.jdo.Transaction;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +18,11 @@ import nl.siegmann.epublib.epub.EpubReader;
 
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreInputStream;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
 @SuppressWarnings("serial")
 public class GetBookContentServlet extends HttpServlet {
@@ -36,9 +43,8 @@ public class GetBookContentServlet extends HttpServlet {
 		log.log(Level.WARNING, "start: " + startIndex + "; end: " + endIndex);
 
 		try {
-			Book book = pm.getObjectById(Book.class, Long.parseLong(bookId));
-
-			BlobstoreInputStream blob = new BlobstoreInputStream(new BlobKey(book.getBlobId()));
+			String blobId = updateBook(bookId, startIndex + ";" + endIndex);
+			BlobstoreInputStream blob = new BlobstoreInputStream(new BlobKey(blobId));
 
 			EpubReader epubReader = new EpubReader();
 			nl.siegmann.epublib.domain.Book b = epubReader.readEpub(blob);
@@ -63,5 +69,41 @@ public class GetBookContentServlet extends HttpServlet {
 		} finally {
 			pm.close();
 		}
+	}
+
+	private String updateBook(String bookId, String resource) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Transaction tr = pm.currentTransaction();
+		String toRet = "";
+
+		try {
+			tr.begin();
+
+			Key key = KeyFactory.createKey("Book", Long.parseLong(bookId));
+			Entity result = datastore.get(key);
+
+			log.log(Level.SEVERE, "result ==  " + result);
+
+			if (result != null) {
+				result.setProperty("currentResource", resource);
+				datastore.put(result);
+
+				toRet = (String) result.getProperty("blobId");
+			}
+
+			tr.commit();
+		} catch (Exception e) {
+			log.log(Level.SEVERE, "caught exception " + e.getMessage());
+			log.log(Level.SEVERE, Arrays.toString(e.getStackTrace()));
+
+			if (tr.isActive()) {
+				tr.rollback();
+			}
+
+			pm.close();
+		}
+
+		return toRet;
 	}
 }

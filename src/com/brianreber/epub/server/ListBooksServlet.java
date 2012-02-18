@@ -37,6 +37,8 @@ public class ListBooksServlet extends HttpServlet {
 				JSONObject tmp = new JSONObject();
 				tmp.put("title", b.getTitle());
 				tmp.put("bookid", b.getId());
+				tmp.put("cover", b.getCoverImage());
+				tmp.put("currentPlace", b.getCurrentResource());
 				names.put(tmp);
 			}
 

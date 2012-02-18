@@ -35,6 +35,7 @@ public class Book {
 	private String emailAddress;
 	private String blobId;
 	private String title;
+	private String currentResource;
 	private Blob coverImage;
 
 	/**
@@ -94,17 +95,30 @@ public class Book {
 	}
 
 	/**
+	 * @return the currentResource
+	 */
+	public String getCurrentResource() {
+		return currentResource;
+	}
+
+	/**
+	 * @param currentResource the currentResource to set
+	 */
+	public void setCurrentResource(String currentResource) {
+		this.currentResource = currentResource;
+	}
+
+	/**
 	 * @param data the data to set
 	 */
-	public void setCoverImage(byte[] data) {
-		this.coverImage = new Blob(data);
+	public void setCoverImage(String data) {
+		this.coverImage = new Blob(data.getBytes());
 	}
 
 	/**
 	 * @return the cover image
 	 */
-	public byte[] getCoverImage() {
-		return coverImage.getBytes();
+	public String getCoverImage() {
+		return new String(coverImage.getBytes());
 	}
-
 }
