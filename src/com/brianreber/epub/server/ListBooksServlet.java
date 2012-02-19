@@ -39,6 +39,7 @@ public class ListBooksServlet extends HttpServlet {
 				tmp.put("bookid", b.getId());
 				tmp.put("cover", b.getCoverImage());
 				tmp.put("currentPlace", b.getCurrentResource());
+				tmp.put("lastRead", b.getLastRead());
 				names.put(tmp);
 			}
 

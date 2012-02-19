@@ -14,9 +14,9 @@ function getListOfBooks() {
 			
 			var td = document.createElement("td");
 			if (data.currentPlace === undefined) {
-				td.innerHTML = "<a href='/book.html?bookId=" + data.bookid + "'>" + data.title + "</a>";
+				td.innerHTML = "<a href='/book.html?bookId=" + data.bookid + "'>" + data.title + "</a><br /><span>" + data.lastRead + "</span>";
 			} else {
-				td.innerHTML = "<a href='/book.html?bookId=" + data.bookid + "#" + data.currentPlace + "'>" + data.title + "</a>";
+				td.innerHTML = "<a href='/book.html?bookId=" + data.bookid + "#" + data.currentPlace + "'>" + data.title + "</a><br /><span>" + data.lastRead + "</span>";
 			}
 			
 			row.appendChild(td);

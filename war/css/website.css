@@ -11,7 +11,7 @@ html, body {
 	margin: 15px;
 }
 
-td {
+.listBody td {
 	padding: 10px;
 }
 
