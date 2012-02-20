@@ -3,6 +3,7 @@ package com.brianreber.epub.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -87,6 +88,7 @@ public class GetBookContentServlet extends HttpServlet {
 
 			if (result != null) {
 				result.setProperty("currentResource", resource);
+				result.setProperty("lastRead", new Date());
 				datastore.put(result);
 
 				toRet = (String) result.getProperty("blobId");

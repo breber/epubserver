@@ -113,7 +113,6 @@ public class Book {
 	 */
 	public void setCurrentResource(String currentResource) {
 		this.currentResource = currentResource;
-		lastRead = new Date();
 	}
 
 	/**
