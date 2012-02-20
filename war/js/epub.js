@@ -13,10 +13,19 @@ function getListOfBooks() {
 			row.appendChild(td1);
 			
 			var td = document.createElement("td");
+			var lastReadDate = new Date(data.lastRead);
+			var lastHour = lastReadDate.getHours();
+			var lastMin = lastReadDate.getMinutes();
+			
+			var lastRead = (lastReadDate.getMonth() + 1) + "/" + lastReadDate.getDate() + "/" + lastReadDate.getFullYear() + " " + 
+								((lastHour > 12) ? (lastHour - 12) : lastHour) + ":" + 
+								((lastMin < 10) ? ("0" + lastMin) : lastMin) + " " + ((lastHour > 12) ? "PM" : "AM");
 			if (data.currentPlace === undefined) {
-				td.innerHTML = "<a href='/book.html?bookId=" + data.bookid + "'>" + data.title + "</a><br /><span>" + data.lastRead + "</span>";
+				td.innerHTML =	"<a href='/book.html?bookId=" + data.bookid + "'>" + data.title + "</a><br />" +
+								"<span class='lastRead'>" + lastRead + "</span>";
 			} else {
-				td.innerHTML = "<a href='/book.html?bookId=" + data.bookid + "#" + data.currentPlace + "'>" + data.title + "</a><br /><span>" + data.lastRead + "</span>";
+				td.innerHTML =	"<a href='/book.html?bookId=" + data.bookid + "#" + data.currentPlace + "'>" + data.title + "</a><br />" +
+								"<span class='lastRead'>" + lastRead + "</span>";
 			}
 			
 			row.appendChild(td);

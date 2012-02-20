@@ -50,3 +50,8 @@ a:hover {
 .selected {
 	font-weight: bold;
 }
+
+.lastRead {
+	font-size: 80%;
+}
+
