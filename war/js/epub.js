@@ -7,12 +7,13 @@ function getListOfBooks() {
 			var row = document.createElement("div");
 			row.className = "row-fluid";
 			
-			var td1 = document.createElement("div");
+			var imgDiv = document.createElement("div");
 			var img = document.createElement("img");
 			img.src = data.cover;
-			td1.appendChild(img);
-			td1.className = "span2";
-			row.appendChild(td1);
+
+			imgDiv.className = "span2";
+			imgDiv.appendChild(img);
+			row.appendChild(imgDiv);
 			
 			var td = document.createElement("div");
 			td.className = "span10";
@@ -23,12 +24,29 @@ function getListOfBooks() {
 			var lastRead = (lastReadDate.getMonth() + 1) + "/" + lastReadDate.getDate() + "/" + lastReadDate.getFullYear() + " " + 
 								((lastHour > 12) ? (lastHour - 12) : lastHour) + ":" + 
 								((lastMin < 10) ? ("0" + lastMin) : lastMin) + " " + ((lastHour > 12) ? "PM" : "AM");
+			
 			if (data.currentPlace === undefined) {
-				td.innerHTML =	"<a href='/book.html?bookId=" + data.bookid + "'>" + data.title + "</a><br />" +
-								"<span class='lastRead'>" + lastRead + "</span>";
+				var link = document.createElement("a");
+				link.href = '/book.html?bookId=' + data.bookid;
+				link.textContent = data.title;
+				
+				td.appendChild(link);
+				
+				var lastReadDiv = document.createElement("div");
+				lastReadDiv.className = "lastRead";
+				lastReadDiv.textContent = lastRead;
+				td.appendChild(lastReadDiv);
 			} else {
-				td.innerHTML =	"<a href='/book.html?bookId=" + data.bookid + "#" + data.currentPlace + "'>" + data.title + "</a><br />" +
-								"<span class='lastRead'>" + lastRead + "</span>";
+				var link = document.createElement("a");
+				link.href = '/book.html?bookId=' + data.bookid + '#' + data.currentPlace;
+				link.textContent = data.title;
+				
+				td.appendChild(link);
+				
+				var lastReadDiv = document.createElement("div");
+				lastReadDiv.className = "lastRead";
+				lastReadDiv.textContent = lastRead;
+				td.appendChild(lastReadDiv);
 			}
 			
 			row.appendChild(td);
