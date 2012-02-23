@@ -2,8 +2,12 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" type="text/css" />
     <link rel="stylesheet" href="css/website.css" type="text/css" />
     <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/epub.js"></script>
     
     <script type="text/javascript">
@@ -16,11 +20,25 @@
   </head>
 
   <body>
-  	<div class="left">
-		<table id="chapterGuide"></table> 
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="brand" href="javascript:void()">ePub Reader</a>
+				<ul class="nav">
+					<li id="bookTitle" class="active"><a href="javascript:void()">Book Title...</a></li>
+				</ul>
+			</div>
+		</div>
 	</div>
-  	<div class="right">
-		<iframe id="content"></iframe>
+	<div class="container-fluid">
+		<div class="row-fluid">
+		  	<div class="span2">
+		  		<div class="well sidebar-nav">
+					<ul id="chapterGuide" class="nav nav-list"></ul> 
+				</div>
+			</div>
+			<iframe id="content" class="span10"></iframe>
+	  	</div>
   	</div>
   </body>
 </html>

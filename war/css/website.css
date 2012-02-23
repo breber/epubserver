@@ -7,51 +7,12 @@ html, body {
 	overflow-x: hidden;
 }
 
-.listBody {
-	margin: 15px;
-}
-
-.listBody td {
-	padding: 10px;
-}
-
-.left {
-	width: 190px;
-	padding: 10px;
-}
-
-.right {
-	position: fixed;
-	height: 100%;
-	top: 0px;
-	right: 15px;
-	left: 200px;
-}
-
-.left table {
-	width: 100%;
-}
-
 iframe {
 	width: 100%;
 	height: 100%;
 	border: none;
 }
 
-a:link, a:visited, a:active {
-	text-decoration: none;
-	color: #052C6E;
-}
-
-a:hover {
-	text-decoration: underline;
-}
-
-.selected {
-	font-weight: bold;
-}
-
 .lastRead {
 	font-size: 80%;
 }
-

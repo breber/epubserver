@@ -4,15 +4,18 @@ function getListOfBooks() {
 
 		$.each(results.books, function(index, data) {
 			console.log(data);
-			var row = document.createElement("tr");
+			var row = document.createElement("div");
+			row.className = "row-fluid";
 			
-			var td1 = document.createElement("td");
+			var td1 = document.createElement("div");
 			var img = document.createElement("img");
 			img.src = data.cover;
 			td1.appendChild(img);
+			td1.className = "span2";
 			row.appendChild(td1);
 			
-			var td = document.createElement("td");
+			var td = document.createElement("div");
+			td.className = "span10";
 			var lastReadDate = new Date(data.lastRead);
 			var lastHour = lastReadDate.getHours();
 			var lastMin = lastReadDate.getMinutes();
@@ -42,28 +45,27 @@ function getResources() {
 		
 		$.getJSON("/book/resources", { bookid : bookId }, function(results) {
 			$.each(results.resources, function(index, data) {
-				var row = document.createElement("tr");
-				var td = document.createElement("td");
+				var li = document.createElement("li");
 
-				td.innerHTML = '<a id="' + data.id + ';' + data.id_end + '" href="#' + data.id + ';' + data.id_end + '">' + data.title + '</a>';
-				td.onclick = function() {
+				li.id = data.id + ';' + data.id_end;
+				li.innerHTML = '<a id="link' + data.id + ';' + data.id_end + '" href="#' + data.id + ';' + data.id_end + '">' + data.title + '</a>';
+				li.onclick = function() {
 					loadResource(data.id, data.id_end);
 				};
 
-				row.appendChild(td);
-				tbl.appendChild(row);
+				tbl.appendChild(li);
 			});
-
-	                // If we have a hash value in our url, try and load those resources
-	                var urlHash = window.location.hash;
-	                if (urlHash !== null && urlHash.length > 1) {
-	                        var currentResource = urlHash.substr(1, urlHash.indexOf(';') - 1);
-	                        var endResource = urlHash.substr(urlHash.indexOf(';') + 1);
-
-	                        if (currentResource !== undefined && currentResource !== null) {
-	                                loadResource(currentResource, endResource);
-	                        }
-	                }
+			
+			// If we have a hash value in our url, try and load those resources
+			var urlHash = window.location.hash;
+			if (urlHash !== null && urlHash.length > 1) {
+				var currentResource = urlHash.substr(1, urlHash.indexOf(';') - 1);
+				var endResource = urlHash.substr(urlHash.indexOf(';') + 1);
+			
+				if (currentResource !== undefined && currentResource !== null) {
+					loadResource(currentResource, endResource);
+				}
+			}
 		});
 	}
 };
@@ -75,8 +77,8 @@ function loadResource(start, end) {
 		var content = document.getElementById("content");
 
 		$("#chapterGuide").ready(function() {
-			$("a.selected").removeClass("selected");
-			$("a[id='" + start + ";" + end + "']").addClass("selected");
+			$("li.active").removeClass("active");
+			$("li[id='" + start + ";" + end + "']").addClass("active");
 		});
 		content.src = "http://" + window.location.host + "/book/content?bookid=" + bookId + 
 							"&startid=" + start + "&endid=" + end;
