@@ -27,7 +27,7 @@ function getListOfBooks() {
 			
 			if (data.currentPlace === undefined) {
 				var link = document.createElement("a");
-				link.href = '/book.html?bookId=' + data.bookid;
+				link.href = '/book.html?bookId=' + data.bookid + '&bookTitle=' + window.encodeURI(data.title);
 				link.textContent = data.title;
 				
 				td.appendChild(link);
@@ -38,7 +38,7 @@ function getListOfBooks() {
 				td.appendChild(lastReadDiv);
 			} else {
 				var link = document.createElement("a");
-				link.href = '/book.html?bookId=' + data.bookid + '#' + data.currentPlace;
+				link.href = '/book.html?bookId=' + data.bookid + '&bookTitle=' + window.encodeURI(data.title) + '#' + data.currentPlace;
 				link.textContent = data.title;
 				
 				td.appendChild(link);
@@ -57,6 +57,9 @@ function getListOfBooks() {
 
 function getResources() {
 	var bookId = $.getUrlVar('bookId');
+	var bookTitle = $.getUrlVar('bookTitle');
+	
+	$("#bookTitle").text(window.decodeURI(bookTitle));
 	
 	if (bookId !== null && bookId !== undefined) {
 		var tbl = document.getElementById("chapterGuide");
