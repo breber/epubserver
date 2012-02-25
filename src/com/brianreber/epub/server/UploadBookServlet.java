@@ -48,7 +48,7 @@ public class UploadBookServlet extends HttpServlet {
 			if (b.getCoverImage() != null) {
 				book.setCoverImage(scaleCover(b.getCoverImage().getInputStream()));
 			} else {
-				book.setCoverImage("");
+				book.setCoverImage("book.png");
 			}
 
 			try {
