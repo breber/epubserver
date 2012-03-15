@@ -3,24 +3,12 @@ function getListOfBooks() {
 		var tbl = document.getElementById("availableBooks");
 
 		$.each(results.books, function(index, data) {
-			console.log(data);
 			var row = document.createElement("li");
-			row.className = "ui-btn ui-li ui-li-has-thumb";
-			row.setAttribute("data-inline", "false");
-			row.setAttribute("data-theme", "c");
-			
-			var rowDiv = document.createElement("div");
-			rowDiv.className = "ui-btn-inner ui-li";
-			
+			var anchor = document.createElement("a");
 			var img = document.createElement("img");
-			img.src = data.cover;
-			img.className = "ui-li-thumb";
-
-			var td = document.createElement("a");
-			td.className = "ui-link-inherit";
-			td.setAttribute("data-ajax", "false");
-			td.appendChild(img);
-
+			var heading = document.createElement("h3");
+			var lastReadP = document.createElement("p");
+			
 			var lastReadDate = new Date(data.lastRead);
 			var lastHour = lastReadDate.getHours();
 			var lastMin = lastReadDate.getMinutes();
@@ -29,36 +17,29 @@ function getListOfBooks() {
 								((lastHour > 12) ? (lastHour - 12) : lastHour) + ":" + 
 								((lastMin < 10) ? ("0" + lastMin) : lastMin) + " " + ((lastHour > 12) ? "PM" : "AM");
 			
+			img.src = data.cover;
+			heading.textContent = data.title;
+			lastReadP.textContent = lastRead;
+			row.setAttribute("data-icon", "arrow-r");
+			row.setAttribute("data-iconpos", "right");
+			row.setAttribute("data-inline", "false");
+			row.setAttribute("data-wrapperels", "div");
+			
 			if (data.currentPlace === undefined) {
-				var link = document.createElement("h3");
-				link.textContent = data.title;
-				link.className = "ui-li-heading";
-				
-				td.href = '/book.html?bookId=' + data.bookid + '&bookTitle=' + window.encodeURI(data.title);
-				td.appendChild(link);
-				
-				var lastReadP = document.createElement("p");
-				lastReadP.className = "ui-li-desc";
-				lastReadP.textContent = lastRead;
-				td.appendChild(lastReadP);
+				anchor.href = '/book.html?bookId=' + data.bookid + '&bookTitle=' + window.encodeURI(data.title);
 			} else {
-				var link = document.createElement("h3");
-				link.textContent = data.title;
-				link.className = "ui-li-heading";
-				
-				td.href = '/book.html?bookId=' + data.bookid + '&bookTitle=' + window.encodeURI(data.title) + '#' + data.currentPlace;
-				td.appendChild(link);
-				
-				var lastReadP = document.createElement("p");
-				lastReadP.className = "ui-li-desc";
-				lastReadP.textContent = lastRead;
-				td.appendChild(lastReadP);
+				anchor.href = '/book.html?bookId=' + data.bookid + '&bookTitle=' + window.encodeURI(data.title) + '#' + data.currentPlace;
 			}
 			
-			rowDiv.appendChild(td);
-			row.appendChild(rowDiv);
+			anchor.appendChild(img);
+			anchor.appendChild(heading);
+			anchor.appendChild(lastReadP);
+			
+			row.appendChild(anchor);
 			tbl.appendChild(row);
 		});
+		
+		$('#availableBooks').listview('refresh');
 	});
 };
 
