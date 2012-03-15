@@ -20,16 +20,19 @@ function getListOfBooks() {
 			img.src = data.cover;
 			heading.textContent = data.title;
 			lastReadP.textContent = lastRead;
+			anchor.setAttribute("data-ajax", "false");
 			row.setAttribute("data-icon", "arrow-r");
 			row.setAttribute("data-iconpos", "right");
 			row.setAttribute("data-inline", "false");
 			row.setAttribute("data-wrapperels", "div");
 			
-			if (data.currentPlace === undefined) {
-				anchor.href = '/book.html?bookId=' + data.bookid + '&bookTitle=' + window.encodeURI(data.title);
-			} else {
-				anchor.href = '/book.html?bookId=' + data.bookid + '&bookTitle=' + window.encodeURI(data.title) + '#' + data.currentPlace;
+			var tempUrl = "/book.html?bookId=" + data.bookid + "&bookTitle=" + window.encodeURI(data.title);
+			
+			if (data.currentPlace !== undefined) {
+				tempUrl += data.currentPlace;
 			}
+			
+			anchor.href = tempUrl;
 			
 			anchor.appendChild(img);
 			anchor.appendChild(heading);
@@ -46,6 +49,7 @@ function getListOfBooks() {
 function getResources() {
 	var bookId = $.getUrlVar('bookId');
 	var bookTitle = $.getUrlVar('bookTitle');
+	var tempUrl = "/book.html?bookId=" + bookId + "&bookTitle=" + bookTitle;
 	
 	$("#bookTitle").text(window.decodeURI(bookTitle));
 	
@@ -55,37 +59,22 @@ function getResources() {
 		$.getJSON("/book/resources", { bookid : bookId }, function(results) {
 			$.each(results.resources, function(index, data) {
 				var li = document.createElement("li");
-
-				li.id = data.id + ';' + data.id_end;
-				li.className = "ui-btn ui-li";
-				li.setAttribute("data-theme", "c");
+				var href = tempUrl + "&curRes=" + data.id + "&endRes=" + data.id_end;
 				
-				var div = document.createElement("div");
-				div.className = "ui-btn-inner ui-li";
+				li.innerHTML = '<a id="link' + data.id + ';' + data.id_end + '" href="' + href + '" data-ajax="false">' + data.title + '</a>';
 				
-				var div1 = document.createElement("div");
-				div1.innerHTML = '<a id="link' + data.id + ';' + data.id_end + '" href="#' + data.id + ';' + data.id_end + '" class="ui-link-inherit" data-ajax="false">' + data.title + '</a>';
-				div1.className = "ui-btn-text";
-				
-				div.appendChild(div1);
-				li.appendChild(div);
-				li.onclick = function() {
-					loadResource(data.id, data.id_end);
-				};
-
 				tbl.appendChild(li);
 			});
 			
 			// If we have a hash value in our url, try and load those resources
-			var urlHash = window.location.hash;
-			if (urlHash !== null && urlHash.length > 1) {
-				var currentResource = urlHash.substr(1, urlHash.indexOf(';') - 1);
-				var endResource = urlHash.substr(urlHash.indexOf(';') + 1);
-			
-				if (currentResource !== undefined && currentResource !== null) {
-					loadResource(currentResource, endResource);
-				}
+			var currentResource = $.getUrlVar('curRes');
+			var endResource = $.getUrlVar('endRes');
+		
+			if (currentResource !== undefined && currentResource !== null) {
+				loadResource(currentResource, endResource);
 			}
+
+			$('#chapterGuide').listview('refresh');
 		});
 	}
 };
