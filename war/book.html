@@ -2,12 +2,14 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/jquery.mobile.min.css" type="text/css" />
     <link rel="stylesheet" href="css/website.css" type="text/css" />
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery.mobile.min.js"></script>
     <script type="text/javascript" src="js/epub.js"></script>
     
     <script type="text/javascript">
@@ -20,25 +22,21 @@
   </head>
 
   <body>
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="brand" href="/">ePub Reader</a>
-				<ul class="nav">
-					<li class="active"><a id="bookTitle" href="javascript:void()"></a></li>
-				</ul>
-			</div>
+  	<div data-role="page">
+ 		<div data-role="header" class="center">
+			<a href="/" data-icon="home">
+				<span class="ui-btn-text">Home</span>
+			</a>
+			<h1 tabindex="0" role="heading">ePub Reader</h1>
 		</div>
-	</div>
-	<div class="container-fluid page">
-		<div class="row-fluid page-row">
-		  	<div class="span2 chapterListWrapper">
-		  		<div class="well sidebar-nav">
-					<ul id="chapterGuide" class="nav nav-list"></ul> 
+		<div class="container-fluid page">
+			<div class="row-fluid page-row">
+			  	<div class="span2 chapterListWrapper">
+					<ul id="chapterGuide" data-role="listview" class="ui-listview"></ul> 
 				</div>
-			</div>
-			<iframe id="content" class="span10"></iframe>
+				<iframe id="content" class="span10"></iframe>
+		  	</div>
 	  	</div>
-  	</div>
+	</div>
   </body>
 </html>

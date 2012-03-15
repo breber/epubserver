@@ -1,4 +1,4 @@
-html, body {
+.html, .body {
 	padding: 0px;
 	margin: 0px;
 	width: 100%;
@@ -28,6 +28,13 @@ iframe {
     right:0;
     margin-top:60px;
     margin-bottom:20px;
+    padding-left: 0px;
+}
+
+.bottom {
+	padding-top: 20px;
+	padding-left: 40px;
+	padding-right: 40px;
 }
 
 .page-row {

@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html class="html">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" type="text/css" />
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/jquery.mobile.min.css" type="text/css"/>
     <link rel="stylesheet" href="css/website.css" type="text/css" />
     <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery.mobile.min.js"></script>
     <script type="text/javascript" src="js/epub.js"></script>
     
     <script type="text/javascript">
@@ -19,21 +18,17 @@
     <title>ePub Reader</title>
   </head>
 
-  <body>
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="brand" href="/">ePub Reader</a>
-				<ul class="nav">
-					<li id="uploadBook">
-						<a href="/uploadbook.jsp">Upload Book</a>
-					</li>
-				</ul>
-			</div>
+  <body class="ui-mobile-viewport body">
+	<div data-role="page">
+		<div data-role="header" class="center">
+			<a href="uploadbook.jsp" data-icon="plus">
+				<span class="ui-btn-text">Upload Book</span>
+			</a>
+			<h1 tabindex="0" role="heading">ePub Reader</h1>
+		</div>
+		<div data-role="content" role="main" class="bottom">
+			<ul data-role="listview" class="ui-listview" id="availableBooks" data-ajax="false"></ul>
 		</div>
 	</div>
-	<div class="container page">
-		<div class="row-fluid availableBooks" id="availableBooks"></div>
-  	</div>
   </body>
 </html>
