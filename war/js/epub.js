@@ -2,6 +2,8 @@ function getListOfBooks() {
 	$.getJSON("/book/list", function(results) {
 		var tbl = document.getElementById("availableBooks");
 
+		$.mobile.hidePageLoadingMsg();
+		
 		$.each(results.books, function(index, data) {
 			var row = document.createElement("li");
 			var anchor = document.createElement("a");

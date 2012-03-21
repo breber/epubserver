@@ -9,7 +9,8 @@
 <script type="text/javascript" src="js/epub.js"></script>
 
 <script type="text/javascript">
-	$().ready(function () {
+ 	$().ready(function () {
+ 		$.mobile.showPageLoadingMsg();
 		getListOfBooks();
 	});
 </script>
@@ -19,13 +20,15 @@
 
 <body>
 	<div data-role="page">
-		<div data-role="header">
+		<div data-role="header" data-position="fixed">
 			<a href="uploadbook.jsp" data-icon="plus">Upload Book</a>
 			<h1>ePub Reader</h1>
 		</div>
 	
 		<div data-role="content">
-			<ul data-role="listview" data-ajax="false" data-inset="true" id="availableBooks"></ul>
+			<div>
+				<ul data-role="listview" data-ajax="false" data-inset="true" id="availableBooks"></ul>
+			</div>
 		</div>
 	</div>
 </body>
