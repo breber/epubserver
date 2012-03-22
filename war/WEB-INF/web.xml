@@ -65,6 +65,17 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/book/getresource</url-pattern>
 	</servlet-mapping>
 	
+	
+	<!-- Mark a Book as Finished -->
+	<servlet>
+		<servlet-name>MarkBookFinishedServlet</servlet-name>
+		<servlet-class>com.brianreber.epub.server.MarkBookFinishedServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MarkBookFinishedServlet</servlet-name>
+		<url-pattern>/book/finish</url-pattern>
+	</servlet-mapping>
+	
 	<!-- Require the user be logged in to do anything on this AppEngine server -->
 	<security-constraint>
 		<web-resource-collection>

@@ -31,6 +31,11 @@ import com.google.appengine.api.datastore.Blob;
 @Entity
 public class Book {
 
+	public static final Integer QUEUED = 0;
+	public static final Integer INPROGRESS = 1;
+	public static final Integer FINISHED = 2;
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -40,9 +45,11 @@ public class Book {
 	private String currentResource;
 	private Blob coverImage;
 	private Date lastRead;
+	private Integer status;
 
 	public Book() {
 		lastRead = new Date();
+		status = QUEUED;
 	}
 
 	/**
@@ -134,5 +141,19 @@ public class Book {
 	 */
 	public Date getLastRead() {
 		return lastRead;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public int getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }

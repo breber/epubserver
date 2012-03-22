@@ -44,7 +44,7 @@ public class GetBookContentServlet extends HttpServlet {
 		log.log(Level.WARNING, "start: " + startIndex + "; end: " + endIndex);
 
 		try {
-			String blobId = updateBook(bookId, startIndex + ";" + endIndex);
+			String blobId = updateBook(bookId, "&curRes=" + startIndex + "&endRes=" + endIndex);
 			BlobstoreInputStream blob = new BlobstoreInputStream(new BlobKey(blobId));
 
 			EpubReader epubReader = new EpubReader();
@@ -87,6 +87,7 @@ public class GetBookContentServlet extends HttpServlet {
 			log.log(Level.SEVERE, "result ==  " + result);
 
 			if (result != null) {
+				result.setProperty("status", Book.INPROGRESS);
 				result.setProperty("currentResource", resource);
 				result.setProperty("lastRead", new Date());
 				datastore.put(result);
