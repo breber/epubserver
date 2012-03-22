@@ -12,7 +12,25 @@
 <script type="text/javascript">
 	$().ready(function() {
 		$.mobile.showPageLoadingMsg();
-		getResources();
+
+		var currentResource = $.getUrlVar('curRes');
+		var endResource = $.getUrlVar('endRes');
+	
+		if (currentResource !== undefined && currentResource !== null) {
+			loadResource(currentResource, endResource);
+		} else {
+			window.location += "#chapterList";
+		}
+		
+		if (window.location.hash.indexOf("chapterList") > 0) {
+			getResources();
+		} else {
+			$("#chapterButton").bind("click", function() {
+				getResources();
+				
+				$("#chapterButton").bind("click", function() {});
+			});
+		}
 	});
 </script>
 
@@ -20,16 +38,25 @@
 </head>
 
 <body>
-	<div data-role="page" id="bookContent">
+	<div data-role="page" id="bookContent" class="bookContent">
 		<div data-role="header" data-position="fixed">
-			<a href="/" data-icon="home" data-iconpos="notext">Home</a>
+			<a href="/" data-ajax="false" data-icon="home" data-iconpos="notext">Home</a>
 			<h1 id="titleBookPage">ePub Reader</h1>
-			<a href="#chapterList" data-icon="grid" data-iconpos="notext">Chapters</a>
+			<a href="#chapterList" data-icon="grid" id="chapterButton">Chapters</a>
 		</div>
 		
 		<div data-role="content" class="full">
 			<iframe id="content"></iframe>
-	  	</div>
+		</div>
+	  	
+	  	<div data-role="footer" data-position="fixed">
+		  	<div data-role="navbar">
+				<ul>
+					<li><a id="previous">Previous</a></li>
+					<li><a id="next">Next</a></li>
+				</ul>
+			</div>
+		</div>
 	</div>
 	<div data-role="page" id="chapterList">
 		<div data-role="header" data-position="fixed">

@@ -87,6 +87,7 @@ public class GetBookContentServlet extends HttpServlet {
 			log.log(Level.SEVERE, "result ==  " + result);
 
 			if (result != null) {
+				result.setProperty("status", Book.INPROGRESS);
 				result.setProperty("currentResource", resource);
 				result.setProperty("lastRead", new Date());
 				datastore.put(result);
