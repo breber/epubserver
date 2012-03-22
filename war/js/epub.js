@@ -81,7 +81,6 @@ function addBookToList(tbl, data) {
 };
 
 function getResources() {
-	console.log("getResources");
 	var bookId = $.getUrlVar('bookId');
 	var bookTitle = $.getUrlVar('bookTitle');
 	var tempUrl = "/book.html?bookId=" + bookId + "&bookTitle=" + bookTitle;
@@ -90,6 +89,8 @@ function getResources() {
 	
 	if (bookId !== null && bookId !== undefined) {
 		var tbl = document.getElementById("chapterGuide");
+		var currentResource = $.getUrlVar('curRes');
+		var endResource = $.getUrlVar('endRes');
 		
 		$.getJSON("/book/resources", { bookid : bookId }, function(results) {
 			$.mobile.hidePageLoadingMsg();
@@ -101,9 +102,23 @@ function getResources() {
 				li.innerHTML = '<a id="link' + data.id + ';' + data.id_end + '" href="' + href + '" data-ajax="false">' + data.title + '</a>';
 				
 				tbl.appendChild(li);
+				
+				if (data.id == endResource) {
+					$("#next .ui-btn-text").text(String(data.title));
+					$("#next").attr("href", href);
+				}
+				
+				if (data.id_end == currentResource) {
+					$("#previous .ui-btn-text").text(String(data.title));
+					$("#previous").attr("href", href);
+				}
 			});
 			
-			$('#chapterGuide').listview('refresh');
+			try {
+				$('#chapterGuide').listview('refresh');
+			} catch (e) {
+				// Do nothing...
+			}
 		});
 	}
 };

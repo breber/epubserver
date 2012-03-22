@@ -11,6 +11,8 @@
 
 <script type="text/javascript">
 	$().ready(function() {
+		getResources();
+		
 		$.mobile.showPageLoadingMsg();
 
 		var currentResource = $.getUrlVar('curRes');
@@ -22,15 +24,17 @@
 			window.location += "#chapterList";
 		}
 		
-		if (window.location.hash.indexOf("chapterList") > 0) {
-			getResources();
-		} else {
-			$("#chapterButton").bind("click", function() {
-				getResources();
-				
-				$("#chapterButton").bind("click", function() {});
-			});
-		}
+		$("#chapterButton").bind("click", function() {
+			$('#chapterGuide').listview('refresh');
+		});
+		
+		$("#previous").bind("click", function() {
+			console.log("previous");
+		});
+		
+		$("#next").bind("click", function() {
+			console.log("next");
+		});
 	});
 </script>
 
