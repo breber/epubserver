@@ -31,7 +31,10 @@ public class ListBooksServlet extends HttpServlet {
 			List<Book> records = (List<Book>) query.execute();
 
 			JSONObject obj = new JSONObject();
-			JSONArray names = new JSONArray();
+
+			JSONArray current = new JSONArray();
+			JSONArray finished = new JSONArray();
+			JSONArray queue = new JSONArray();
 
 			for (Book b : records) {
 				JSONObject tmp = new JSONObject();
@@ -40,10 +43,22 @@ public class ListBooksServlet extends HttpServlet {
 				tmp.put("cover", b.getCoverImage());
 				tmp.put("currentPlace", b.getCurrentResource());
 				tmp.put("lastRead", b.getLastRead());
-				names.put(tmp);
+
+				if (b.getStatus() == Book.QUEUED) {
+					queue.put(tmp);
+				} else if (b.getStatus() == Book.INPROGRESS) {
+					current.put(tmp);
+				} else if (b.getStatus() == Book.FINISHED) {
+					finished.put(tmp);
+				} else {
+					b.setStatus(Book.QUEUED);
+					queue.put(tmp);
+				}
 			}
 
-			obj.put("books", names);
+			obj.put("inprogress", current);
+			obj.put("finished", finished);
+			obj.put("queue", queue);
 
 			String output = obj.toString();
 			out.print(output);

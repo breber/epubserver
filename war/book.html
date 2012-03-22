@@ -1,44 +1,79 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/website.css" type="text/css" />
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/epub.js"></script>
-    
-    <script type="text/javascript">
-	    $().ready(function () {
-	    	getResources();
-	    });
-    </script>
-    
-    <title>ePub Reader</title>
-  </head>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/jquery.mobile.min.css" type="text/css" />
+<link rel="stylesheet" href="css/website.css" type="text/css" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile.min.js"></script>
+<script type="text/javascript" src="js/epub.js"></script>
 
-  <body>
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="brand" href="/">ePub Reader</a>
-				<ul class="nav">
-					<li class="active"><a id="bookTitle" href="javascript:void()"></a></li>
+<script type="text/javascript">
+	$().ready(function() {
+		getResources();
+		
+		$.mobile.showPageLoadingMsg();
+
+		var currentResource = $.getUrlVar('curRes');
+		var endResource = $.getUrlVar('endRes');
+	
+		if (currentResource !== undefined && currentResource !== null) {
+			loadResource(currentResource, endResource);
+		} else {
+			window.location += "#chapterList";
+		}
+		
+		$("#chapterButton").bind("click", function() {
+			$('#chapterGuide').listview('refresh');
+		});
+		
+		$("#previous").bind("click", function() {
+			console.log("previous");
+		});
+		
+		$("#next").bind("click", function() {
+			console.log("next");
+		});
+	});
+</script>
+
+<title>ePub Reader</title>
+</head>
+
+<body>
+	<div data-role="page" id="bookContent" class="bookContent">
+		<div data-role="header" data-position="fixed">
+			<a href="/" data-ajax="false" data-icon="home" data-iconpos="notext">Home</a>
+			<h1 id="titleBookPage">ePub Reader</h1>
+			<a href="#chapterList" data-icon="grid" id="chapterButton">Chapters</a>
+		</div>
+		
+		<div data-role="content" class="full">
+			<iframe id="content"></iframe>
+		</div>
+	  	
+	  	<div data-role="footer" data-position="fixed">
+		  	<div data-role="navbar">
+				<ul>
+					<li><a id="previous" data-ajax="false">Previous</a></li>
+					<li><a id="current" data-ajax="false"></a></li>
+					<li><a id="next" data-ajax="false">Next</a></li>
 				</ul>
 			</div>
 		</div>
 	</div>
-	<div class="container-fluid page">
-		<div class="row-fluid page-row">
-		  	<div class="span2 chapterListWrapper">
-		  		<div class="well sidebar-nav">
-					<ul id="chapterGuide" class="nav nav-list"></ul> 
-				</div>
-			</div>
-			<iframe id="content" class="span10"></iframe>
+	<div data-role="page" id="chapterList">
+		<div data-role="header" data-position="fixed">
+			<a href="#bookContent" data-icon="arrow-l">Back</a>
+			<h1 id="titleChapterPage">ePub Reader</h1>
+		</div>
+		
+		<div data-role="content">
+			<div>
+				<ul id="chapterGuide" data-role="listview" data-inset="true"></ul> 
+		  	</div>
 	  	</div>
-  	</div>
-  </body>
+	</div>
+</body>
 </html>
