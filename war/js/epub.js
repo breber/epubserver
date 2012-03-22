@@ -5,6 +5,7 @@ function getListOfBooks() {
 		$.mobile.hidePageLoadingMsg();
 		
 		$.each(results.books, function(index, data) {
+			//TODO: add a sublist for read, currently reading, would like to read
 			var row = document.createElement("li");
 			var anchor = document.createElement("a");
 			var img = document.createElement("img");
@@ -53,12 +54,14 @@ function getResources() {
 	var bookTitle = $.getUrlVar('bookTitle');
 	var tempUrl = "/book.html?bookId=" + bookId + "&bookTitle=" + bookTitle;
 	
-	$("#bookTitle").text(window.decodeURI(bookTitle));
+	$("#titleBookPage").text(window.decodeURI(bookTitle));
 	
 	if (bookId !== null && bookId !== undefined) {
 		var tbl = document.getElementById("chapterGuide");
 		
 		$.getJSON("/book/resources", { bookid : bookId }, function(results) {
+			$.mobile.hidePageLoadingMsg();
+			
 			$.each(results.resources, function(index, data) {
 				var li = document.createElement("li");
 				var href = tempUrl + "&curRes=" + data.id + "&endRes=" + data.id_end;
@@ -68,7 +71,6 @@ function getResources() {
 				tbl.appendChild(li);
 			});
 			
-			// If we have a hash value in our url, try and load those resources
 			var currentResource = $.getUrlVar('curRes');
 			var endResource = $.getUrlVar('endRes');
 		
@@ -87,10 +89,6 @@ function loadResource(start, end) {
 	if (bookId !== null && bookId !== undefined) {
 		var content = document.getElementById("content");
 
-		$("#chapterGuide").ready(function() {
-			$("li.active").removeClass("active");
-			$("li[id='" + start + ";" + end + "']").addClass("active");
-		});
 		content.src = "http://" + window.location.host + "/book/content?bookid=" + bookId + 
 							"&startid=" + start + "&endid=" + end;
 	}
