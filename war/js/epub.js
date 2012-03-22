@@ -108,6 +108,10 @@ function getResources() {
 					$("#next").attr("href", href);
 				}
 				
+				if (data.id == currentResource) {
+					$("#current .ui-btn-text").text(String(data.title));
+				}
+				
 				if (data.id_end == currentResource) {
 					$("#previous .ui-btn-text").text(String(data.title));
 					$("#previous").attr("href", href);
@@ -120,6 +124,8 @@ function getResources() {
 				// Do nothing...
 			}
 		});
+		
+		// TODO: if we didn't find a next, make text say "finish" and have it call finished endpoint
 	}
 };
 
