@@ -24,10 +24,10 @@ public class MarkBookFinishedServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(MarkBookFinishedServlet.class.getSimpleName());
 
 	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
-		String bookId = req.getParameter("bookid");
+		String bookId = req.getParameter("bookId");
 
 		try {
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -39,15 +39,16 @@ public class MarkBookFinishedServlet extends HttpServlet {
 				Key key = KeyFactory.createKey("Book", Long.parseLong(bookId));
 				Entity result = datastore.get(key);
 
-				log.log(Level.SEVERE, "result ==  " + result);
-
 				if (result != null) {
 					result.setProperty("status", Book.FINISHED);
+					result.setProperty("currentResource", "");
 					result.setProperty("lastRead", new Date());
 					datastore.put(result);
 				}
 
 				tr.commit();
+
+				res.sendRedirect("/");
 			} catch (Exception e) {
 				log.log(Level.SEVERE, "caught exception " + e.getMessage());
 				log.log(Level.SEVERE, Arrays.toString(e.getStackTrace()));

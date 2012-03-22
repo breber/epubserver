@@ -95,6 +95,9 @@ function getResources() {
 		$.getJSON("/book/resources", { bookid : bookId }, function(results) {
 			$.mobile.hidePageLoadingMsg();
 			
+			var foundNext = false;
+			var foundPrev = false;
+			
 			$.each(results.resources, function(index, data) {
 				var li = document.createElement("li");
 				var href = tempUrl + "&curRes=" + data.id + "&endRes=" + data.id_end;
@@ -104,6 +107,7 @@ function getResources() {
 				tbl.appendChild(li);
 				
 				if (data.id == endResource) {
+					foundNext = true;
 					$("#next .ui-btn-text").text(String(data.title));
 					$("#next").attr("href", href);
 				}
@@ -113,6 +117,7 @@ function getResources() {
 				}
 				
 				if (data.id_end == currentResource) {
+					foundPrev = true;
 					$("#previous .ui-btn-text").text(String(data.title));
 					$("#previous").attr("href", href);
 				}
@@ -123,9 +128,19 @@ function getResources() {
 			} catch (e) {
 				// Do nothing...
 			}
+			
+			// If we didn't find a "next", set it to finish book on click
+			if (!foundNext) {
+				$("#next .ui-btn-text").text("Finish");
+				$("#next").attr("href", "/book/finish?bookId=" + bookId);
+			}
+			
+			// If we didn't find a "previous", set it to the chapter list
+			if (!foundPrev) {
+				$("#previous .ui-btn-text").text("Chapters");
+				$("#previous").attr("href", "#chapterList");
+			}
 		});
-		
-		// TODO: if we didn't find a next, make text say "finish" and have it call finished endpoint
 	}
 };
 
