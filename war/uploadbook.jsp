@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/jquery.mobile.min.css" type="text/css" />
 <script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/jquery.mobile.min.js"></script>
+<!-- <script type="text/javascript" src="js/jquery.mobile.min.js"></script> -->
 
 <title>Upload an ePub Book</title>
 </head>

@@ -62,7 +62,7 @@ function addBookToList(tbl, data) {
 	row.setAttribute("data-inline", "false");
 	row.setAttribute("data-wrapperels", "div");
 	
-	var tempUrl = "/book.html?bookId=" + data.bookid + "&bookTitle=" + window.encodeURI(data.title);
+	var tempUrl = "/book.html?bookId=" + data.bookid + "&bookTitle=" + window.encodeURI(data.title).replace('#', '%23');
 	
 	if (data.currentPlace !== undefined && data.currentPlace.length > 0) {
 		tempUrl += data.currentPlace;
@@ -85,7 +85,7 @@ function getResources() {
 	var bookTitle = $.getUrlVar('bookTitle');
 	var tempUrl = "/book.html?bookId=" + bookId + "&bookTitle=" + bookTitle;
 	
-	$("#titleBookPage").text(window.decodeURI(bookTitle));
+	$("#titleBookPage").text(window.decodeURI(bookTitle).replace('%23', '#'));
 	
 	if (bookId !== null && bookId !== undefined) {
 		var tbl = document.getElementById("chapterGuide");
