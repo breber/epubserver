@@ -92,6 +92,7 @@ function getResources() {
 	var tempUrl = "/book.html?bookId=" + bookId + "&bookTitle=" + bookTitle;
 	
 	$("#titleBookPage").text(window.decodeURI(bookTitle).replace('%23', '#'));
+	$("#titleChapterPage").text(window.decodeURI(bookTitle).replace('%23', '#'));
 	
 	if (bookId !== null && bookId !== undefined) {
 		var tbl = document.getElementById("chapterGuide");
