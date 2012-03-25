@@ -48,10 +48,16 @@ function addBookToList(tbl, data) {
 	var lastReadDate = new Date(data.lastRead);
 	var lastHour = lastReadDate.getHours();
 	var lastMin = lastReadDate.getMinutes();
+	var amPm = (lastHour >= 12) ? "PM" : "AM";
+	
+	if (lastHour == 0) {
+		lastHour = 12;
+	} else if (lastHour > 12) {
+		lastHour -= 12;
+	}
 	
 	var lastRead = (lastReadDate.getMonth() + 1) + "/" + lastReadDate.getDate() + "/" + lastReadDate.getFullYear() + " " + 
-						((lastHour > 12) ? (lastHour - 12) : lastHour) + ":" + 
-						((lastMin < 10) ? ("0" + lastMin) : lastMin) + " " + ((lastHour > 12) ? "PM" : "AM");
+						lastHour + ":" + ((lastMin < 10) ? ("0" + lastMin) : lastMin) + " " + amPm;
 	
 	img.src = data.cover;
 	heading.textContent = data.title;
