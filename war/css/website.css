@@ -18,7 +18,14 @@ iframe {
 	bottom: 30px;
 	left: 0px;
 	right: 0px;
-	position: absolute;
+	position: fixed;
 	overflow-x: hidden;
 	overflow-y: hidden;
+}
+
+.body {
+	overflow-x: hidden;
+	overflow-y: hidden;
+	height: 100%;
+	width: 100%;
 }
