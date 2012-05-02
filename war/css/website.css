@@ -29,3 +29,19 @@ iframe {
 	height: 100%;
 	width: 100%;
 }
+
+.scroll {
+	overflow-y: scroll;
+	height: 100%;
+	width: 100%;
+}
+
+.scroll-outer {
+	top: 30px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	position: fixed;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
