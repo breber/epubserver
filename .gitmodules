@@ -1,0 +1,6 @@
+[submodule "lib/org/json"]
+	path = lib/org/json
+	url = https://github.com/douglascrockford/JSON-java.git
+[submodule "lib/apache"]
+	path = lib/apache
+	url = https://github.com/apache/commons-io.git

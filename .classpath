@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="org/json/tests/|apache/|apache/src/main/java/|apache/src/main/java/" kind="src" path="lib"/>
+	<classpathentry excluding="org/apache/commons/io/output/|org/apache/commons/io/FileUtils.java|org/apache/commons/io/IOUtils.java|org/apache/commons/io/FileDeleteStrategy.java|org/apache/commons/io/FileSystemUtils.java|org/apache/commons/io/LineIterator.java|org/apache/commons/io/FileCleaner.java|org/apache/commons/io/FileCleaningTracker.java|org/apache/commons/io/input/|org/apache/commons/io/monitor/|org/apache/commons/io/filefilter/AgeFileFilter.java|org/apache/commons/io/filefilter/MagicNumberFileFilter.java|org/apache/commons/io/filefilter/FileFilterUtils.java|org/apache/commons/io/DirectoryWalker.java|org/apache/commons/io/comparator/SizeFileComparator.java" kind="src" path="lib/apache/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/json-1.5.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.6.4.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlpull_1_0_5.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-simple-1.6.4.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/epublib-core-3.0-SNAPSHOT-complete.jar"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
