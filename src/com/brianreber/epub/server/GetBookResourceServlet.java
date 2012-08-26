@@ -65,7 +65,9 @@ public class GetBookResourceServlet extends HttpServlet {
 	private String canonicalize(String baseHref, String otherHref) {
 		String base = FilenameUtils.getPath(baseHref);
 
+		log.log(Level.SEVERE, "baseHref: " + baseHref);
 		log.log(Level.SEVERE, "base: " + base);
+		log.log(Level.SEVERE, "other: " + otherHref);
 
 		return FilenameUtils.concat(base, otherHref);
 	}
